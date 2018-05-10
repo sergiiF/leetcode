@@ -1,0 +1,58 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+*     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+  };
+
+ /*
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if (root == 0) return 0;
+        int lDepth = maxDepth(root->left);
+        int rDepth = maxDepth(root->right);
+        return 1 + ((lDepth < rDepth)?rDepth:lDepth);
+    }
+};
+*/
+
+#include <stack>
+using namespace std;
+
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(0), right(0) {}
+ };
+
+class Solution {
+public:
+    class stackItem {
+    public:
+        TreeNode *node;
+        int level;
+
+        stackItem(TreeNode* node, int level):node(node), level(level) {}
+    };
+    int maxDepth(TreeNode* root) {
+        if (root == 0) return 0;
+
+        stack<stackItem*> s;
+        int res = 0;
+        s.push(new stackItem(root,1));
+        while(!s.empty()) {
+            stackItem* item = s.top();
+            res = (res < item->level)?item->level : res;
+            s.pop();
+            if (item->node->left) s.push(new stackItem(item->node->left, item->level + 1));
+            if (item->node->right) s.push(new stackItem(item->node->right, item->level + 1));
+            delete item;
+        }
+        return res;
+    }
+};
