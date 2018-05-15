@@ -18,5 +18,4 @@ public:
 
         return (l->val == r->val) && isSymmetricNodes(l->left, r->right) && isSymmetricNodes(l->right, r->left);
     }
-};Difficulty
-DifficultyDifficultyDifficultyDifficultyDifficultyDifficulty
+};
