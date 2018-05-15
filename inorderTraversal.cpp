@@ -1,4 +1,8 @@
 #include <vector>
+
+#include <set>
+#include <stack>
+
 using namespace std;
 
 struct TreeNode {
@@ -9,7 +13,7 @@ struct TreeNode {
 };
 
 // Inorder (Left, Root, Right)
-#define NORECURSION
+#define SERGEY
 
 
 #ifdef RECURSION
@@ -39,19 +43,46 @@ public:
 #endif
 
 
-
-
-
-#ifdef NORECURSION
-#include <set>
-#include <stack>
-using namespace std;
+#ifdef SERGEY
 
 class Solution {
 public:
     vector<int> inorderTraversal(TreeNode* root) {
         stack<TreeNode*> s;
-        set<int> marked;
+        vector<int> v;
+
+        if (!root) return v;
+
+        TreeNode* current = root;
+        while (!s.empty() || current) {
+            if (current) {
+                if (current->left) {
+                    s.push(current);
+                    current = current->left;
+                } else {
+                    v.push_back(current->val);
+                    current = current->right;
+                }
+            } else {
+                // get current from stack, which means left already has been processed
+                current = s.top(); s.pop();
+                v.push_back(current->val);
+                current = current->right;
+            }
+        }
+        return v;
+
+    }
+};
+#endif
+
+#ifdef NORECURSION
+
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        stack<TreeNode*> s;
+        set<TreeNode*> marked;
         vector<int> v;
 
         if (!root) return v;
@@ -60,7 +91,7 @@ public:
         while (!s.empty()) {
             TreeNode* node = s.top(); s.pop();
 
-            if ((!node->left && !node->right) || (marked.find(node->val) != marked.end())) {
+            if ((!node->left && !node->right) || (marked.find(node) != marked.end())) {
                 v.push_back(node->val);
                 continue;
             }
@@ -69,7 +100,7 @@ public:
             }
 
             s.push(node);
-            marked.insert(node->val);
+            marked.insert(node);
 
             if(node->left) {
                 s.push(node->left);
