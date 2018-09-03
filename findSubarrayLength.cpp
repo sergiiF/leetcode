@@ -2,59 +2,10 @@
 #include <iostream>
 using namespace std;
 
-#ifdef OLDVERSION
-class Solution {
-public:
-    int findLength(vector<int>& A, vector<int>& B) {
-        int la = 0;
-        int lb = 0;
-        int sizeA = A.size();
-        int sizeB = B.size();
-        int res = 0;
-
-        if (!sizeA || !sizeB) return res;
-
-        while (la < sizeA) {
-            while (lb < sizeB) {
-                //find first equal
-                if (A[la] == B[lb]) {
-//                    cout <<"A[la] == B[lb]     "<< A[la]<< "=="<< B[lb]<<endl;
-                    int ra = la + 1;
-                    int rb = lb + 1;
-                    int count = 1;
-                    while ((ra < sizeA) && (rb < sizeB)) {
-                        if (A[ra] == B[rb]) {
-//                            cout << "-----A[ra] == B[rb]     "<<A[ra]<<"=="<<  B[rb]<<endl;
-                            count++; ra++; rb++;
-                        } else {
-                            //if (res < count) {
-                              //  res = count;
-                                //cout <<"Res = "<<res<<endl;
-                            //}
-                            break;
-                        }
-                    }
-                    if (res < count) res = count;
-//                    cout<<"Res = "<<res<<endl;
-                    //lb = rb;
-                } //else
-                lb++;
-            }
-//            cout << "================================="<<endl;
-            lb = 0;
-            la++;
-        }
-        cout<<"Res = "<<res<<endl;
-        return res;
-    }
-};
-#endif
 
 class Solution {
 public:
     int findLength(vector<int>& A, vector<int>& B) {
-        //int la = 0;
-        //int lb = 0;
         int sizeA = A.size();
         int sizeB = B.size();
         int res = 0;
