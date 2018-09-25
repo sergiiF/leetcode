@@ -29,6 +29,6 @@ public:
 
 int main() {
     Solution s;
-    string str{"     Hello , my    name is John     "};
+    string str{"     Hello, my    name is John     "};
     cout<<str<<"---->"<<s.countSegments(str)<<endl;
 }

@@ -10,51 +10,68 @@ it holds a field named both, which is an XOR of the next node and the previous n
 using namespace std;
 
 struct listNode {
-    listNode(int e = 0):val{e},both{} {}
+    listNode(int e = 0):val{e}, both{} { }
     int val;
-    int both;
+    long both;
 
 };
 
 class xorList {
 public:
     xorList():head(nullptr), last(nullptr), size{} {};
-    ~xorList(){};
+    ~xorList();
 
     void add(int element);
-    listNode get (int index);
+    listNode* get (int index);
 private:
-    shared_ptr<listNode> head;
-    shared_ptr<listNode> last;
+    listNode* head;
+    listNode* last;
+
     int size;
 
 };
 
 void xorList::add(int elem) {
-    shared_ptr<listNode> node(new listNode(elem));
-    //node->val = elem;
+    listNode* node = new listNode(elem);
+    cout<<"before add"<<endl;
     ++size;
     if (!last) {
         head = last = node;
     } else {
-        last->both^=node;
+        node->both = (long)last;
+        last->both = last->both ^ (long)node;
         last = node;
     }
+    cout<<hex<<"after add: "<<node<<endl;
+}
+
+xorList::~xorList() {
+
+    while (last != head) {
+        cout<<"deleting "<<last->val<<endl;
+        listNode* cur = (listNode*)last->both;
+        cur->both ^= (long)last;
+        delete last;
+        last = cur;
+    }
+    if (head) cout<<"deleting head "<<head->val<<endl;
+    delete head;
 }
 
 listNode* xorList::get(int index) {
     if (size < index)
-        throw out_of_range;
+        throw out_of_range("");
 
-    shared_ptr<listNode> next = head;
-    shared_ptr<listNode> prev = nullptr;
+    listNode* cur = head;
+    listNode* next = nullptr;
+    listNode* prev = nullptr;
     for (int i = 0; i<index; i++) {
-        if (prev) {
-            prev = next;
-            next = next->both^prev;
-        }
+        next = (listNode*)(cur->both^(long)prev);
+        prev = cur;
+        cur = next;
     }
-    return next;
+    cout<<hex<<"Get return: "<<cur<<endl;
+    return cur;
 }
 
 
@@ -65,7 +82,7 @@ int main() {
     list.add(2);
     list.add(3);
 
-    shared_ptr<listNode> node = list.get(0);
+    listNode* node = list.get(0);
     cout<<"Get first: "<<node->val<<endl;
     node = list.get(2);
     cout<<"Get last: "<<node->val<<endl;

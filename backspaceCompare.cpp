@@ -7,8 +7,8 @@ using namespace std;
 class Solution {
 public:
     bool backspaceCompare(string S, string T) {
-        int i = nextCharacter(S, S.length());
-        int k = nextCharacter(T, T.length());
+        int i = nextCharacter(S, S.length()-1);
+        int k = nextCharacter(T, T.length()-1);
         while ((i>=0) && (k >=0)) {
             cout<<"i= "<<i<<",k= "<<k<<" Comparing "<<S[i]<<" and "<<T[k]<<endl;
             if (S[i] != T[k]) return false;
@@ -28,7 +28,7 @@ private:
             }
             if (str[id] != '#'){
              --id;
-         }
+            }
             int count = 0;
             while (((str[id] == '#') || count)  && (id >= 0)) {
                 if (str[id] == '#') ++count;
