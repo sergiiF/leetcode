@@ -5,9 +5,12 @@ using namespace std;
 
 class Solution {
 public:
-    int scoreOfParentheses(string S) {
+    int scoreOfParentheses1(string S) {
         int start_pos = 0;
         return scoreOfParenthesesRecursion(S, start_pos);
+    }
+
+    int scoreOfParentheses(string S) {
     }
 
     int scoreOfParenthesesRecursion(string str, int& pos) {
