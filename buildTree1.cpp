@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 /**
@@ -16,7 +17,7 @@ using namespace std;
 
 class Solution {
 public:
-    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+    TreeNode* buildTree1(vector<int>& inorder, vector<int>& postorder) {
         if (inorder.size()!= postorder.size() || inorder.size() == 0)
             return nullptr;
         return dfs(inorder, postorder, 0, inorder.size()-1, 0, postorder.size()-1);
@@ -52,7 +53,30 @@ private:
         }
         return -1;
     }
+
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        if (inorder.size()!= postorder.size() || inorder.size() == 0)
+            return nullptr;
+        return buildTreeDfs(inorder, postorder, inorder.begin(), inorder.end()-1);
+    }
+
+    TreeNode* buildTreeDfs(vector<int>& inorder, vector<int>& postorder, vector<int>::iterator start_in, vector<int>::iterator end_in) {
+        if (start_in < inorder.begin()
+         || end_in >= inorder.end() 
+         || start_in > end_in)
+            return nullptr;
+         vector<int>::iterator it = find(start_in, end_in, postorder.back());
+         if (it == inorder.end()) return nullptr;
+
+         TreeNode* node = new TreeNode(postorder.back());
+         postorder.pop_back();
+         node->right = buildTreeDfs(inorder, postorder, it+1, end_in);
+         node->left = buildTreeDfs(inorder, postorder, start_in, it-1);
+         return node;
+    }
 };
+
 
 int main (){
     vector <int> in{1,9,10,3,15,20,27};

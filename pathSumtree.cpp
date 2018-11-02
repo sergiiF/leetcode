@@ -1,4 +1,6 @@
 #include <queue>
+    #include <stack>
+
 using namespace std;
 #define NULL 0
 /**
@@ -61,8 +63,6 @@ public:
 
     bool hasPathSum(TreeNode* root, int sum) {
         if (!root) return false;
-        if (root->val > sum) return false;
-
         return hps(root,sum,0);
 
 
@@ -82,4 +82,37 @@ public:
 
         return false;
     }
+
+
+    bool hasPathSum1(TreeNode* root, int sum) {
+        if (!root) return false;
+        if (root->val > sum) return false;
+
+        stack<int> sums;
+        stack<TreeNode*> nodes;
+        nodes.push(root);
+        sums.push(root->val);
+
+
+        while(!nodes.empty()) {
+            TreeNode* node = nodes.top(); nodes.pop();
+            int cur_sum = sums.top(); sums.pop();
+            if (!node->left && !node->right && cur_sum == sum) { 
+                return true;
+            }
+            if (node->left) {
+                nodes.push(node->left);
+                sums.push(cur_sum+node->left->val);
+            }
+            if (node->right) {
+                nodes.push(node->right);
+                sums.push(cur_sum+node->right->val);
+            }
+        }
+        return false;
+    }
+
+
 };
+
+

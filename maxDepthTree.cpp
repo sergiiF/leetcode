@@ -29,7 +29,7 @@ struct TreeNode {
     TreeNode *right;
     TreeNode(int x) : val(x), left(0), right(0) {}
  };
-
+/*
 class Solution {
 public:
     class stackItem {
@@ -54,5 +54,31 @@ public:
             delete item;
         }
         return res;
+    }
+};
+*/
+
+#include <queue>
+using namespace std;
+
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if (!root) return 0;
+
+        int level = 0;
+        queue<TreeNode*> q;
+        q.push(root);
+        while(!q.empty()) {
+            ++level;
+            int size = q.size();
+            while (size--) {
+                if(q.front()->left) q.push(q.front()->left);
+                if(q.front()->right) q.push(q.front()->right);
+
+                q.pop();
+            }
+        }
+        return level;
     }
 };

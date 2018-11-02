@@ -13,7 +13,7 @@ struct TreeNode {
 };
 
 // Inorder (Left, Root, Right)
-#define SERGEY
+//#define SERGEY
 
 
 #ifdef RECURSION
@@ -113,3 +113,34 @@ public:
     }
 };
 #endif
+
+
+class Solution {
+public:
+    struct StackItem{
+        StackItem(TreeNode* t): node(t), visited(false){}
+        TreeNode* node;
+        bool visited;
+    };
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> res;
+        if (!root) return res;
+
+        stack<StackItem> st;
+        st.push({root});
+        while (!st.empty()) {
+            TreeNode* node = st.top().node;
+            if (!st.top().visited) {
+                st.top().visited = true;
+                if (node->left)
+                    st.push({node->left});
+            } else {
+                st.pop();
+                res.push_back(node->val);
+                if (node->right)
+                    st.push({node->right});
+            }
+        }
+        return res;
+    }
+};

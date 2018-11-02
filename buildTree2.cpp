@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 /**
@@ -16,7 +17,7 @@ using namespace std;
 
 class Solution {
 public:
-    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+    TreeNode* buildTree1(vector<int>& preorder, vector<int>& inorder) {
             return dfs(preorder, inorder, 0, preorder.size() - 1, 0, inorder.size() - 1);
     }
 private:
@@ -46,6 +47,27 @@ private:
             if (v[i] == val) return i;
         }
         return -1;
+    }
+
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        if(inorder.empty() || inorder.size() != preorder.size())
+            return nullptr;
+        auto root_it = preorder.begin();
+        return buildTreeDfs(preorder, inorder, inorder.begin(), inorder.end() - 1, root_it);
+    }
+
+    TreeNode* buildTreeDfs(vector<int>& preorder, vector<int>& inorder, vector<int>::iterator in_start, vector<int>::iterator in_end, vector<int>::iterator& pre_idx){
+        if (in_start < inorder.begin() || in_end >= inorder.end() || in_start > in_end) 
+            return nullptr;
+        auto it = find(in_start, in_end, *pre_idx);
+        if(it == preorder.end())
+            return nullptr;
+        TreeNode* node = new TreeNode(*pre_idx++);
+        node->left = buildTreeDfs(preorder, inorder, in_start, it - 1, pre_idx);
+        node->right = buildTreeDfs(preorder, inorder, it + 1, in_end, pre_idx);
+
+        return node;
     }
 };
 
