@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <iterator>
 #include <cstdlib>
-
+#include <ctime>
 // #include <list>
 using namespace std;
 template <typename T>
@@ -21,7 +21,7 @@ void vector_print(const string& msg, const vector<T>& v) {
 
 class Solution {
 public:
-    Solution(vector<int> nums): initial(nums) {
+    Solution(vector<int> nums): initial(nums), size(nums.size()) {
         
     }
     
@@ -32,12 +32,23 @@ public:
     
     /** Returns a random shuffling of the array. */
     vector<int> shuffle() {
-        return initial;
+        auto copy(initial);
+        for (int i = size - 1; i != 0; --i) {
+            int newIdx = rand()%(i+ 1);
+            swap(copy[i], copy[newIdx]);
+        }
+        return copy;
     }
 
 private:
     vector<int> initial;
-
+    int size;
+    int random_between(int start, int end) {
+        
+        auto generator = bind( uniform_int_distribution<>{start,end}, default_random_engine{});
+        return generator();
+        //return rand()%(end - start) + start;
+    }
 
 };
 
@@ -49,6 +60,7 @@ private:
  */
 
 int main() {
+        srand(time(NULL));
     vector<int> nums{1,2,3,4,5};
     Solution s(nums);
     vector_print("shuffle: ", s.shuffle());
