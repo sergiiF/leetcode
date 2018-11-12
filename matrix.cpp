@@ -132,6 +132,13 @@ vector<vector<int>> createMinMatrixOptimized(vector<vector<int>> origMatrix, int
 
 }
 
+
+vector<vector<int>> createMinMatrixOptimized(vector<vector<int>> origMatrix, int nestedMatrixSize) {
+    int rows = origMatrix.size();
+    int columns = origMatrix.front().size();
+    vector <vector<int>> minMatrix {};
+}
+
 int main() {
 
     vector<vector<int>> matrix = {{1, 6, 3, 8}, {5, 2, 7, 4}, {9, 10, 15, 12}, {13, 14, 16, 11}};
